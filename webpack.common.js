@@ -1,8 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const WriteFilePlugin = require('write-file-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -10,15 +10,15 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new WriteFilePlugin(),
     new CopyPlugin({
-      patterns:[
-      {
-        from: 'assets/',
-        to: 'assets/',
-        context: 'src/',
-      },
-    ]}),
+      patterns: [
+        {
+          from: 'assets/',
+          to: 'assets/',
+          context: 'src/',
+        },
+      ]
+    }),
     new HtmlWebpackPlugin({
       title: 'WTMP Starter',
       meta: {
@@ -29,7 +29,8 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true
       },
-    })
+    }),
+    new ESLintPlugin({})
   ],
   output: {
     filename: '[name].bundle.js',
@@ -42,14 +43,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "eslint-loader",
-        options: {
-          // eslint options (check .eslintrc.json too)
-        }
-      },
       {
         test: /\.s[ac]ss$/i,
         use: [
